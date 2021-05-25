@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{% if is_login %}Login
+        {% elif is_home or is_blog %}{{ site.author }}
+        {% elif is_tag %}{{ tag }}
+        {% elif post %}{{ post.title }}
+        {% endif %}
+        | {{ site.name }}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="me@richkershaw.com" />
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" href="https://richkershaw.com/favicon.ico">
+
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700" rel="stylesheet">
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="https://richkershaw.com/css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="https://richkershaw.com/css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="https://richkershaw.com/css/bootstrap.css">
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="chttps://richkershaw.com/ss/flexslider.css">
+	<!-- Flaticons  -->
+	<link rel="stylesheet" href="https://richkershaw.com/fonts/flaticon/font/flaticon.css">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="https://richkershaw.com/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="https://richkershaw.com/css/owl.theme.default.min.css">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="https://richkershaw.com/css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="https://richkershaw.com/js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+    {% if site.analytics %}
+    <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '{{ site.analytics }}']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    {% endif %}
+	</head>
+	<body>
+{% if is_login %}
+{{ login_form }}
+{% else %}
+    <!-- Not login -->
+	<div id="colorlib-page">
+		<div class="container-wrap">
+		<a href="https://richkershaw.com/" class="js-colorlib-nav-toggle colorlib-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+		<aside id="colorlib-aside" role="complementary" class="border js-fullheight">
+			<div class="text-center">
+				<div class="author-img" style="background-image: url(https://richkershaw.com/images/headshot.jpg);"></div>
+				<h1 id="colorlib-logo"><a href="https://richkershaw.com/index.html">Rich Kershaw</a></h1>
+				<span class="position">Creative technologist, <br />CTO, non-exec and co-founder.</span>
+			</div>
+			<nav id="colorlib-main-menu" role="navigation" class="navbar">
+				<div id="navbar" class="collapse">
+					<ul>
+						<li><a href="https://richkershaw.com/" class="external">Home</a></li>
+						<li><a href="https://richkershaw.com/#about" class="external">About</a></li>
+						<li><a href="https://richkershaw.com/#services" class="external">Services</a></li>
+						<li><a href="https://richkershaw.com/#clients" class="external">Selected Clients</a></li>
+                        <li><a href="https://blog.richkershaw.com/" class="external">Blog</a></li>
+						<li><a href="https://richkershaw.com/#contact" class="external">Contact</a></li>
+					</ul>
+				</div>
+			</nav>
+
+		</aside>
+        <div id="colorlib-main">
+    {% if is_home or is_blog or is_tag %}
+        <!-- Blog or tag -->
+        {% if posts %}
+			<section class="colorlib-blog" data-section="blog">
+				<div class="colorlib-narrow-content">
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3 col-md-pull-3 animate-box" data-animate-effect="fadeInLeft">
+                            <span class="heading-meta">Read</span>
+                            {% if is_tag %}
+                            <h2 class="colorlib-heading">Tag: {{ tag }}</h2>
+                            {% else %}
+                            <h2 class="colorlib-heading">Recent Blog</h2>
+                            {% endif %}
+						</div>
+					</div>
+					<div class="row">
+                        {% for post in posts %}
+						<div class="col-md-4 col-sm-6 animate-box" data-animate-effect="fadeInLeft">
+							<div class="blog-entry">
+								<div class="desc">
+                                    <span><small>{{ post.created_at|format_date }}</small> | <small> by {{ site.author }}</small>
+                                        {% if post.tags %} 
+                                         | 
+                                        <small>
+                                        {{ post.tags|format_tags(delimiter=' ') }}
+                                        </small>
+                                        {% endif %}</span>
+									<h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+									<p>{{ post.content }}</p>
+								</div>
+							</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if pagination.next %}
+					<div class="row">
+						<div class="col-md-12 animate-box">
+                            <p><a href="{{ pagination.next }}" class="btn btn-primary btn-lg btn-load-more">Load more <i class="icon-reload"></i></a></p>
+						</div>
+                    </div>
+                    {% endif %}
+				</div>
+            </section>
+        {% endif %}}
+        <!-- / Blog or tag -->
+    {% elif post.type == 'post' %}
+        <!-- Post -->
+        <section class="colorlib-about" data-section="about">
+            <div class="colorlib-narrow-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row row-bottom-padded-sm animate-box" data-animate-effect="fadeInLeft">
+                            <div class="col-md-12">
+                                <div class="about-desc">
+                                    <span class="heading-meta">Published by {{ site.author }} on {{ post.created_at|format_date }}</span>
+                                    <h2 class="colorlib-heading">{{ post.title }}</h2>
+                                    <div class="content">
+                                        {{ post.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
+                                <div class="hire">
+                                    <h2>I'm currently available for short and long-term projects, including interim and non-executive CTO positions.</h2>
+                                    <a href="mailto:me@richkershaw.com" class="btn-hire">Get in touch!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- / Post -->
+    {% endif %}
+    <!-- / Not login -->
+{% endif %}
+
+		</div><!-- end:colorlib-main -->
+	</div><!-- end:container-wrap -->
+	</div><!-- end:colorlib-page -->
+
+	<!-- jQuery -->
+	<script src="https://richkershaw.com/js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="https://richkershaw.com/js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="https://richkershaw.com/js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="https://richkershaw.com/js/jquery.waypoints.min.js"></script>
+	<!-- Flexslider -->
+	<script src="https://richkershaw.com/js/jquery.flexslider-min.js"></script>
+	<!-- Owl carousel -->
+	<script src="https://richkershaw.com/js/owl.carousel.min.js"></script>
+	<!-- Counters -->
+	<script src="https://richkershaw.com/js/jquery.countTo.js"></script>
+	
+	
+	<!-- MAIN JS -->
+	<script src="https://richkershaw.com/js/main.js"></script>
+
+	</body>
+</html>
+
